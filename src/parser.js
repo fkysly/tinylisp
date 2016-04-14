@@ -10,9 +10,15 @@ class Expression {
 }
 
 function parser(tokens) {
-  let ast = new Expression('', null)
+  let ast = null
+
+  let token = tokens.shift()
+  if (token === '(') {
+    ast = new Expression('(', null)
+  }
+
   let currentNode = ast
-  for (let token of tokens) {
+  for (token of tokens) {
     if (token === '(') {
       let node = new Expression(token, currentNode)
       currentNode.children.push(node)
