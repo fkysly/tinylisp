@@ -11,7 +11,9 @@ describe('evaluate', () => {
   })
 
   it('case2', () => {
-    assert.deepEqual(evaluate(parser(lexical('(define a 0)'))), 0)
+    let stmt1 = evaluate(parser(lexical('(define a 1)')))
+    let stmt2 = evaluate(parser(lexical('(a)')))
+    assert.deepEqual(stmt2, 1)
   })
 
   it('case3', () => {
@@ -20,5 +22,19 @@ describe('evaluate', () => {
 
   it('case4', () => {
     assert.deepEqual(evaluate(parser(lexical('(define a (if (< 0 1) (+ (* 2 3) (+ 5 6)) (+ 4 5)))'))), 17)
+  })
+
+  it('case5', () => {
+    assert.deepEqual(evaluate(parser(lexical('(* (define a 3) a)'))), 9)
+  })
+
+  it('case6', () => {
+    assert.deepEqual(evaluate(parser(lexical('(* (define a 3) (+ a (0)))'))), 9)
+  })
+
+  it('case7', () => {
+    let stmt1 = evaluate(parser(lexical('(define addOne (lambda (x) (+ x 1)))')))
+    let stmt2 = evaluate(parser(lexical('(addOne 2)')))
+    assert.deepEqual(stmt2, 3)
   })
 })

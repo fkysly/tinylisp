@@ -2,16 +2,24 @@
 
 const Env = require('./env').Env
 const globalEnv = require('./env').globalEnv
+const isNumber = require('./util').isNumber
+const isString = require('./util').isString
 
 function evaluate(node, env) {
   if (typeof env === 'undefined') env = globalEnv
 
-  if (typeof node.value === 'number') {
+  if (isNumber(node.value)) {
     return node.value
+  } else if (node.children.length === 0 && isString(node.value)) {
+    return env.find(node.value)
   }
 
-  if (node.children.length === 1 && typeof node.children[0].value === 'number') {
-    return node.children[0].value
+  if (node.children.length === 1) {
+    if (isNumber(node.children[0].value)) {
+      return node.children[0].value
+    } else if (isString(node.children[0].value)) {
+      return env.find(node.children[0].value)
+    }
   }
 
   if (node.children[0].value === 'if') {
@@ -24,6 +32,17 @@ function evaluate(node, env) {
     let variable = node.children[1].value
     let expr = node.children[2]
     return env.define(variable, evaluate(expr, env))
+
+  } else if (node.children[0].value === 'lambda') {
+    let params = node.children[1].children
+    let body = node.children[2]
+    return function () {
+      let newEnv = new Env(env)
+      for (let i = 0; i < params.length; i++) {
+        newEnv.define(params[i].value, arguments[i])
+      }
+      return evaluate(body, newEnv)
+    }
 
   } else {
     let func = env.find(node.children[0].value)
