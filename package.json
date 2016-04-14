@@ -1,0 +1,29 @@
+{
+  "name": "tinylisp",
+  "version": "1.0.0",
+  "description": "a interpreter of lisp",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack .",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fkysly/tinylisp.git"
+  },
+  "keywords": [
+    "interpreter",
+    "lisp"
+  ],
+  "author": "fkysly@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fkysly/tinylisp/issues"
+  },
+  "homepage": "https://github.com/fkysly/tinylisp#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "webpack": "^1.12.15"
+  }
+}
